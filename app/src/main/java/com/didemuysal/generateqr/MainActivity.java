@@ -2,6 +2,7 @@ package com.didemuysal.generateqr;
 // used libraries: 2
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -35,14 +36,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String data = editTextQR.getText().toString();
-                QRGEncoder qrgEncoder = new QRGEncoder(data,null, QRGContents.Type.TEXT ,500);
-                try {
-                    Bitmap qrBits = qrgEncoder.encodeAsBitmap();
-                    imageView.setImageBitmap(qrBits);
-                } catch (WriterException e) {
-                    e.printStackTrace();
+                if(data.isEmpty()){
+                    editTextQR.setError("Value required.");
+                }else{
+                    QRGEncoder qrgEncoder = new QRGEncoder(data,null, QRGContents.Type.TEXT ,500);
+                    try {
+                        Bitmap qrBits = qrgEncoder.encodeAsBitmap();
+                        imageView.setImageBitmap(qrBits);
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
         });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),Scanner.class));
+            }
+        });
+
+
     }
 }
